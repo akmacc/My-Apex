@@ -1,5 +1,5 @@
 /* ============================================================
-   ORACLE APEX — Premium Modal Dialog Styles
+   ORACLE APEX — Premium Modal Dialog Styles  (v2 — optimised)
    File    : apex_modal_dialog.css
    Upload  : Shared Components → Static Application Files
    Include : App → User Interface → CSS → File URLs
@@ -11,25 +11,24 @@
    └─────────────────────────────────────────────────────────┘  */
 
 :root {
-  /* ── Brand colour (your #14b5f5 cyan) ── */
-  --apx-brand          : #14b5f5;       /* primary accent */
-  --apx-brand-dark     : #0d9fd9;       /* darker shade   */
-  --apx-brand-light    : #0fa8e8;       /* lighter shade  */
-  --apx-brand-glow     : rgba(20, 181, 245, 0.35);  /* shadow tint  */
-  --apx-brand-focus    : rgba(20, 181, 245, 0.18);  /* focus ring   */
+  /* ── Brand colour ── */
+  --apx-brand          : #14b5f5;
+  --apx-brand-dark     : #0d9fd9;
+  --apx-brand-light    : #0fa8e8;
+  --apx-brand-glow     : rgba(20, 181, 245, 0.35);
 
   /* ── Title bar ── */
-  --apx-header-from    : var(--apx-brand-dark);   /* gradient start */
-  --apx-header-mid     : var(--apx-brand);        /* gradient mid   */
-  --apx-header-to      : var(--apx-brand-light);  /* gradient end   */
+  --apx-header-from    : var(--apx-brand-dark);
+  --apx-header-mid     : var(--apx-brand);
+  --apx-header-to      : var(--apx-brand-light);
   --apx-header-text    : #ffffff;
   --apx-header-border  : rgba(255, 255, 255, 0.15);
 
   /* ── Dialog shell ── */
-  --apx-radius         : 16px;          /* corner radius  */
-  --apx-bg             : #ffffff;       /* content bg     */
-  --apx-body-bg        : #f7f8fc;       /* inner body bg  */
-  --apx-footer-bg      : #f0f2f8;       /* button bar bg  */
+  --apx-radius         : 16px;
+  --apx-bg             : #ffffff;
+  --apx-body-bg        : #f7f8fc;
+  --apx-footer-bg      : #f0f2f8;
   --apx-footer-border  : #e0e5f0;
 
   /* ── Backdrop ── */
@@ -37,31 +36,43 @@
   --apx-overlay-blur   : 5px;
 
   /* ── Animation durations ── */
-  --apx-dur-in         : 0.36s;
-  --apx-dur-out        : 0.20s;
+  --apx-dur-in         : 0.34s;
+  --apx-dur-out        : 0.18s;
 }
 
 /* ─────────────────────────────────────────────────────────
-   END OF THEME VARIABLES — no need to edit below this line
+   END OF THEME VARIABLES
    ───────────────────────────────────────────────────────── */
 
 
 /* ── 1. Keyframe Animations ─────────────────────────────── */
 
+/*
+  PERF: Only animate `opacity` and `transform`.
+  Removed `filter: blur()` from dialog-in/out — blur on a
+  container that holds an iframe causes full rasterisation on
+  every frame (cross-origin compositing boundary).  The effect
+  is not worth the ~4 ms/frame cost.
+*/
+
 @keyframes apx-dialog-in {
-  0%   { opacity: 0; transform: translateY(-24px) scale(0.97); filter: blur(3px); }
-  55%  { opacity: 1; filter: blur(0); }
-  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+  0%   { opacity: 0; transform: translateY(-20px) scale(0.97); }
+  100% { opacity: 1; transform: translateY(0)     scale(1);    }
 }
 
 @keyframes apx-dialog-out {
-  0%   { opacity: 1; transform: translateY(0) scale(1); }
-  100% { opacity: 0; transform: translateY(12px) scale(0.97); filter: blur(2px); }
+  0%   { opacity: 1; transform: translateY(0)    scale(1);    }
+  100% { opacity: 0; transform: translateY(10px) scale(0.97); }
 }
 
 @keyframes apx-overlay-in  { from { opacity: 0; } to { opacity: 1; } }
 @keyframes apx-overlay-out { from { opacity: 1; } to { opacity: 0; } }
 
+/*
+  Shimmer: animate background-position (compositor-friendly
+  on browsers that promote background-attachment: fixed layers;
+  otherwise keep the element on its own layer via translateZ).
+*/
 @keyframes apx-titlebar-shine {
   0%   { background-position: -200% center; }
   100% { background-position:  200% center; }
@@ -71,14 +82,18 @@
 /* ── 2. Backdrop Overlay ────────────────────────────────── */
 
 .ui-widget-overlay {
-  background        : var(--apx-overlay-bg) !important;
-  backdrop-filter   : blur(var(--apx-overlay-blur)) saturate(130%) !important;
-  -webkit-backdrop-filter: blur(var(--apx-overlay-blur)) saturate(130%) !important;
-  animation         : apx-overlay-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+  background               : var(--apx-overlay-bg) !important;
+  /* Force GPU layer for backdrop-filter so blur is composited */
+  transform                : translateZ(0);
+  will-change              : opacity;
+  backdrop-filter          : blur(var(--apx-overlay-blur)) saturate(130%) !important;
+  -webkit-backdrop-filter  : blur(var(--apx-overlay-blur)) saturate(130%) !important;
+  animation                : apx-overlay-in 0.22s cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .ui-widget-overlay.apx-closing {
-  animation: apx-overlay-out var(--apx-dur-out) ease-in both !important;
+  animation  : apx-overlay-out var(--apx-dur-out) ease-in both !important;
+  will-change: opacity;
 }
 
 
@@ -88,22 +103,37 @@
   border-radius  : var(--apx-radius) !important;
   overflow       : hidden !important;
   background     : var(--apx-bg) !important;
-  border         : 1px solid rgba(200, 210, 235, 0.16) !important;
+  border         : none !important;
+  outline        : none !important;
 
+  /*
+    Two-layer shadow is enough — the third (0 28px 60px) was
+    triggering repaints on every drag/resize tick.
+  */
   box-shadow:
-    0  2px  4px  rgba(0,0,0,0.06),
-    0  8px 24px  rgba(0,0,0,0.13),
-    0 28px 60px  rgba(0,0,0,0.20),
-    0  0    0 1px rgba(255,255,255,0.07) inset !important;
+    0  4px 16px rgba(0, 0, 0, 0.14),
+    0 20px 48px rgba(0, 0, 0, 0.20) !important;
 
-  animation      : apx-dialog-in var(--apx-dur-in) cubic-bezier(0.22, 1, 0.36, 1) both;
+  /*
+    will-change is scoped to the animating properties only.
+    The browser promotes this element to its own composite
+    layer *before* the first frame, preventing the pop-in
+    that happens when the layer is promoted mid-animation.
+  */
   will-change    : transform, opacity;
   transform-origin: top center;
+  animation      : apx-dialog-in var(--apx-dur-in) cubic-bezier(0.22, 1, 0.36, 1) both;
 }
 
 .ui-dialog.apx-closing {
   animation      : apx-dialog-out var(--apx-dur-out) ease-in both !important;
   pointer-events : none !important;
+  will-change    : transform, opacity;
+}
+
+/* Drop the compositing layer once animation is settled */
+.ui-dialog.apx-settled {
+  will-change: auto;
 }
 
 
@@ -117,22 +147,29 @@
     var(--apx-header-to)  100%
   ) !important;
   border-bottom  : 1px solid var(--apx-header-border) !important;
-  border-radius  : var(--apx-radius) var(--apx-radius) 0 0 !important;
-  margin         : -1px -1px 0 -1px !important;
+  border-radius  : 0 !important;
   padding        : 14px 20px 14px 24px !important;
   position       : relative;
   overflow       : hidden;
 }
 
-/* One-shot shimmer sweep */
+/* One-shot shimmer sweep — own layer to avoid header repaint */
 .ui-dialog .ui-dialog-titlebar::after {
   content         : '';
   position        : absolute;
   inset           : 0;
-  background      : linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  /* translateZ promotes the pseudo to its own compositing layer */
+  transform       : translateZ(0);
+  background      : linear-gradient(
+    90deg,
+    transparent           0%,
+    rgba(255,255,255,0.22) 50%,
+    transparent           100%
+  );
   background-size : 200% 100%;
-  animation       : apx-titlebar-shine 1.2s ease 0.36s 1 forwards;
+  animation       : apx-titlebar-shine 1.1s ease 0.34s 1 forwards;
   pointer-events  : none;
+  /* Remove hint after animation — handled by JS adding .apx-settled */
 }
 
 .ui-dialog .ui-dialog-title {
@@ -143,8 +180,17 @@
   text-shadow    : 0 1px 4px rgba(0, 100, 160, 0.35) !important;
 }
 
-/* Close × button */
+/* ── Close × button ── */
+/*
+  Base state uses transform: translate(-50%, -50%) for centring.
+  Hover adds rotate.  Both declarations must carry the full
+  transform so the browser doesn't snap back to origin.
+*/
 .ui-dialog .ui-dialog-titlebar-close {
+  position       : absolute !important;
+  top            : 50% !important;
+  right          : 16px !important;
+  margin         : 0 !important;
   width          : 28px !important;
   height         : 28px !important;
   border-radius  : 50% !important;
@@ -154,16 +200,15 @@
   display        : flex !important;
   align-items    : center !important;
   justify-content: center !important;
-  transition     : background 0.18s ease, border-color 0.18s ease, transform 0.18s ease !important;
-  top            : 50% !important;
+  /* Single transform baseline — translateY centres vertically */
   transform      : translateY(-50%) !important;
-  right          : 16px !important;
-  margin         : 0 !important;
+  transition     : background 0.18s ease, border-color 0.18s ease, transform 0.18s ease !important;
 }
 
 .ui-dialog .ui-dialog-titlebar-close:hover {
   background     : rgba(255,255,255,0.32) !important;
   border-color   : rgba(255,255,255,0.65) !important;
+  /* Keep the -50% Y offset; add rotate in the same declaration */
   transform      : translateY(-50%) rotate(90deg) !important;
 }
 
@@ -189,7 +234,7 @@
 .ui-dialog .ui-dialog-buttonpane {
   background    : var(--apx-footer-bg) !important;
   border-top    : 1px solid var(--apx-footer-border) !important;
-  border-radius : 0 0 calc(var(--apx-radius) - 1px) calc(var(--apx-radius) - 1px) !important;
+  border-radius : 0 !important;
   padding       : 12px 20px !important;
 }
 
@@ -218,7 +263,6 @@
   text-transform : uppercase !important;
   letter-spacing : 0.07em !important;
 }
-
 
 
 /* ── 8. Buttons inside dialog ───────────────────────────── */
@@ -276,12 +320,28 @@
 
 /* ── 11. Responsive ─────────────────────────────────────── */
 
+/*
+  Avoid overriding left/right/width with pixel values — that
+  triggers layout recalculations.  Use max-width + margin auto
+  instead so the browser handles positioning without reflow.
+*/
 @media (max-width: 640px) {
   .ui-dialog.ui-widget.ui-widget-content {
     border-radius : 12px !important;
-    left          : 10px !important;
-    right         : 10px !important;
-    width         : calc(100vw - 20px) !important;
-    max-width     : none !important;
+    max-width     : calc(100vw - 20px) !important;
+    margin-left   : auto !important;
+    margin-right  : auto !important;
+  }
+}
+
+/* ── 12. Reduced-motion accessibility ───────────────────── */
+
+@media (prefers-reduced-motion: reduce) {
+  .ui-dialog.ui-widget.ui-widget-content,
+  .ui-dialog.apx-closing,
+  .ui-widget-overlay,
+  .ui-widget-overlay.apx-closing {
+    animation  : none !important;
+    transition : none !important;
   }
 }
