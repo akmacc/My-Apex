@@ -1,0 +1,481 @@
+/* 
+================================================================
+   AADHBYTE — APEX UNIVERSAL THEME
+   Custom CSS File
+   
+   HOW TO USE:
+   - Edit colours in Section 1 (Root Variables) only
+   - Do NOT edit colours inline — always use variables
+   - Login page styles are locked at the bottom (Section 6)
+================================================================
+*/
+
+/* 
+================================================================
+1. ROOT COLOUR VARIABLES
+   Edit these to retheme the entire app in one place
+================================================================
+*/
+:root {
+
+    /* ── Brand ─────────────────────────────────── */
+    --brand-primary:        #ffffff;        /* Main teal — header, selected pill, accents */
+
+    /* ── Sidebar Nav ────────────────────────────── */
+    --pill-selected-bg:     #14b5f5;        /* Selected pill background */
+    --pill-selected-text:   #ffffff;        /* Selected pill text & icon colour */
+    --pill-hover-bg:        #14b5f57b; /* Hover pill background */
+    --pill-hover-text:      #000000;        /* Hover pill text colour */
+    --sidebar-text:         #000000;        /* Default nav item text colour */
+
+    /* ── Page Body ──────────────────────────────── */
+    --body-bg:              #f5f7fa;        /* Main content area background */
+
+    /* ── Transitions ────────────────────────────── */
+    --transition:           all 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+
+/* 
+================================================================
+2. PAGE BODY
+================================================================
+*/
+.t-Body-main,
+.t-Body-content {
+    background-color: var(--body-bg) !important;
+} 
+
+.t-Footer {
+    display: none !important;
+}
+
+
+/* 
+================================================================
+3. HEADER BAR
+================================================================
+*/
+
+/* Branding block — left side with logo/app name */
+.t-Header-branding {
+    background-color: var(--brand-primary) !important;
+    background-image: none !important;
+}
+
+/* Logo text & hamburger button colour */
+/* Target the link tag and all inner spans for the logo */
+.t-Header-logo-link,
+.t-Header-logo-link span,
+.t-Header-logo-text {
+    color: #080000 !important;
+}
+
+/* Target the button, the icon class, and pseudo-elements for the hamburger menu */
+.t-Header-controls .t-Button--header,
+.t-Header-controls .t-Button--header .t-Icon,
+.t-Header-controls .t-Button--header::before {
+    color: #080000 !important;
+}
+
+/* User Menu / Navigation Bar Buttons (Text, Icons, and Dropdown Arrows) */
+.t-Header-navBar .t-Button,
+.t-Header-navBar .t-Button span,
+.t-Header-navBar .t-Button .t-Icon,
+.t-Header-navBar .t-Button-label,
+.t-Header-navBar .t-Button::after {
+    color: #080000 !important;
+}
+
+
+/* Right side nav area */
+.t-Header-nav {
+    background-color: transparent !important;
+}
+
+/* Hamburger / header icon buttons — remove pill style */
+.t-Header-controls .t-Button,
+.t-Header-controls .t-Button--header {
+    border-radius: 4px !important;
+    background: transparent !important;
+    box-shadow: none !important;
+    padding: 8px !important;
+    margin: 0 !important;
+    border: none !important;
+    min-width: unset !important;
+    width: 40px !important;
+    height: 40px !important;
+    transform: none !important;
+}
+
+
+/* 
+================================================================
+4. SIDEBAR NAVIGATION
+================================================================
+*/
+
+/* — Deep Clean: strip all default APEX nav chrome — */
+.t-TreeNav .a-TreeView-node,
+.t-TreeNav .a-TreeView-row,
+.t-TreeNav .a-TreeView-content,
+.t-TreeNav .a-TreeView-node.is-selected > .a-TreeView-content,
+.t-TreeNav .a-TreeView-node.is-selected > .a-TreeView-row,
+.t-TreeNav .a-TreeView-node.is-hover > .a-TreeView-content,
+.t-TreeNav .a-TreeView-content.is-hover,
+.t-TreeNav .a-TreeView-content.is-selected {
+    background: none !important;
+    background-color: #f8f9fa00 !important;
+    border: none !important;
+    box-shadow: none !important;
+}
+
+/* ---- NUKE FULL-WIDTH GREY ROW BACKGROUND ON HOVER ---- */
+.t-TreeNav .a-TreeView-node:hover > .a-TreeView-row,
+.t-TreeNav .a-TreeView-row:hover,
+.t-TreeNav .a-TreeView-row.is-hover,
+.t-TreeNav .a-TreeView-node.is-hover > .a-TreeView-row {
+    background-color: transparent !important;
+}
+
+/* Kill the vertical blue line */
+.t-TreeNav .a-TreeView-node::before,
+.t-TreeNav .a-TreeView-row::before,
+.t-TreeNav .a-TreeView-node.is-selected::before,
+.t-TreeNav .a-TreeView-node.is-current::before {
+    display: none !important;
+    content: none !important;
+    width: 0 !important;
+}
+
+/* Kill left border variant of the line */
+.t-TreeNav .a-TreeView-node,
+.t-TreeNav .a-TreeView-row,
+.t-TreeNav .a-TreeView-content {
+    border-left: none !important;
+}
+
+/* — Nav item spacing & top padding — */
+.t-TreeNav {
+    padding-top: 10px !important;
+}
+
+/* — Smooth sidebar & body transitions — */
+.t-Body-side,
+.t-Body-main {
+    transition: var(--transition) !important;
+}
+
+/* — Default pill item — */
+.t-TreeNav .a-TreeView-content {
+    margin: 4px 14px !important;
+    padding: 8px 18px !important;
+    border-radius: 10px !important;
+    color: var(--sidebar-text) !important;
+    transition: var(--transition) !important;
+    display: flex !important;
+    align-items: center !important;
+}
+
+/* — Hover state — */
+.t-TreeNav .a-TreeView-content:hover {
+    background-color: var(--pill-hover-bg) !important;
+    color: var(--pill-hover-text) !important;
+    padding-left: 22px !important;
+}
+
+/* — Selected / Active state — */
+.t-TreeNav .a-TreeView-node.is-selected > .a-TreeView-content,
+.t-TreeNav .a-TreeView-content.is-current,
+.t-TreeNav .a-TreeView-content.is-selected {
+    background-color: var(--pill-selected-bg) !important;
+    color: var(--pill-selected-text) !important;
+    font-weight: 600 !important;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3) !important;
+}
+
+/* — Selected / Active state (ICON COLOR) — */
+.t-TreeNav .a-TreeView-node.is-selected > .a-TreeView-content .fa,
+.t-TreeNav .a-TreeView-content.is-current .fa,
+.t-TreeNav .a-TreeView-content.is-selected .fa {
+    color: var(--pill-selected-text) !important;
+}
+
+/* Force white on the inner label span (Universal Theme override) */
+.t-TreeNav .a-TreeView-node.is-selected > .a-TreeView-content .a-TreeView-label,
+.t-TreeNav .a-TreeView-content.is-current .a-TreeView-label,
+.t-TreeNav .a-TreeView-content.is-selected .a-TreeView-label {
+    color: var(--pill-selected-text) !important;
+}
+
+/* — Icon — inherits colour from parent pill state — */
+.t-TreeNav .a-TreeView-icon {
+    color: inherit !important;
+    margin-right: 12px !important;
+    transition: transform 0.3s ease !important;
+}
+
+.t-TreeNav .a-TreeView-content:hover .a-TreeView-icon {
+    transform: scale(1.1) !important;
+}
+
+/* --------------------------------------------------------------------------
+   GLOBAL PAGE CUSTOM HEADER PROFILE
+   -------------------------------------------------------------------------- */
+/* Container to align items perfectly */
+.custom-header-profile {
+    display: flex;
+    align-items: center;
+    padding: 0 12px;
+    height: 100%;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+    border-radius: 4px;
+}
+
+.custom-header-profile:hover {
+    background-color: rgba(0,0,0,0.04); /* Subtle hover effect */
+}
+
+/* The Mint Avatar Circle */
+.custom-nav-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #d1f7ef !important; /* Soft mint background */
+    color: #0b7a69 !important; /* Dark teal text */
+    font-weight: 600;
+    font-size: 14px;
+    margin-right: 12px;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+}
+
+/* Username Styling */
+.custom-nav-username {
+    font-size: 13px;
+    font-weight: 500;
+    margin-right: 8px;
+    color: #444444; /* Adjust to match your header text color if needed */
+}
+
+/* Small dropdown chevron */
+.custom-nav-chevron {
+    font-size: 10px;
+    color: #777777;
+}
+
+
+/* --------------------------------------------------------------------------
+   6. MODERN SAAS POPUP MENU (COMPACT & ANIMATED)
+   -------------------------------------------------------------------------- */
+/* Main Dropdown Container */
+#custom_profile_menu_menu {
+    border-radius: 10px !important; 
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.12) !important;
+    border: 1px solid #ebebeb !important;
+    background-color: #ffffff !important;
+    padding: 4px !important; /* Tighter outer box */
+    
+    /* The magic: Smooth Slide-In & Fade Animation */
+    animation: dropDownSmooth 0.25s cubic-bezier(0.2, 0.8, 0.2, 1) forwards !important;
+    transform-origin: top center;
+}
+
+/* Define the animation keyframes */
+@keyframes dropDownSmooth {
+    0% { 
+        opacity: 0; 
+        transform: translateY(-8px) scale(0.98); 
+    }
+    100% { 
+        opacity: 1; 
+        transform: translateY(0) scale(1); 
+    }
+}
+
+/* Remove APEX default layout restrictions */
+#custom_profile_menu_menu .a-Menu-content {
+    background-color: transparent !important;
+    border: none !important;
+}
+
+/* Shape the individual menu items */
+#custom_profile_menu_menu .a-Menu-item {
+    background-color: transparent !important;
+    border-radius: 6px !important; /* Crisper corners */
+    margin-bottom: 2px !important;
+    transition: all 0.15s ease !important; /* Smooth color transition on hover */
+}
+
+/* COMPACT SPACING: Tighter padding inside the buttons */
+#custom_profile_menu_menu .a-Menu-inner {
+    padding: 6px 12px !important; 
+}
+
+/* ---- HOVER STATE: Soft grey background ---- */
+#custom_profile_menu_menu .a-Menu-item:hover,
+#custom_profile_menu_menu .a-Menu-item.is-active,
+#custom_profile_menu_menu .a-Menu-item.is-focused,
+#custom_profile_menu_menu .a-Menu-item.is-expanded {
+    background-color: #f0f4f8 !important; 
+}
+
+/* COMPACT TEXT: Slightly smaller fonts and tighter gaps */
+#custom_profile_menu_menu .a-Menu-label {
+    color: #444444 !important;
+    font-weight: 500 !important;
+    font-size: 13px !important; 
+}
+
+#custom_profile_menu_menu .fa {
+    color: #777777 !important;
+    font-size: 14px !important; 
+    margin-right: 10px !important; 
+    transition: color 0.15s ease !important;
+}
+
+/* ---- HOVER STATE: Turn text and icon your custom Blue ---- */
+#custom_profile_menu_menu .a-Menu-item:hover .a-Menu-label,
+#custom_profile_menu_menu .a-Menu-item:hover .fa,
+#custom_profile_menu_menu .a-Menu-item.is-focused .a-Menu-label,
+#custom_profile_menu_menu .a-Menu-item.is-focused .fa {
+    color: #14b5f5 !important;
+}
+
+
+
+
+
+
+
+
+/* ==================================================
+   Custom APEX Switch Colors (Green = On, Red = Off)
+   ================================================== */
+
+/* 1. OFF STATE (Red) - When the checkbox is NOT checked */
+.a-Switch input[type="checkbox"]:not(:checked) + .a-Switch-toggle {
+    background-color: #ef4444 !important; /* Crisp Red */
+}
+
+/* 2. ON STATE (Green) - When the checkbox IS checked */
+.a-Switch input[type="checkbox"]:checked + .a-Switch-toggle {
+    background-color: #22c55e !important; /* Crisp Green */
+}
+
+/* Optional: Change the color of the little circle handle if needed (default is white) */
+.a-Switch input[type="checkbox"] + .a-Switch-toggle::before {
+    background-color: #ffffff; 
+}
+
+
+
+/* APEX renders items as: */
+/* .apex-item-text         — Text/Number/Date */
+/* .apex-item-select-list  — Select List      */
+/* .apex-item-textarea     — Textarea         */
+
+/* app.css */
+.apex-item-text,
+.apex-item-select-list,
+.apex-item-textarea {
+  height:        36px;
+  padding:       0 12px;
+  border:        1.5px solid #C8CDD8;
+  border-radius: 4px;
+  font-family:   "DM Sans", sans-serif;
+  font-size:     12px;
+  color:         #1E2333;
+  background:    #ffffff;
+  transition:    border-color 150ms ease,
+                 box-shadow 150ms ease;
+  outline:       none;
+}
+.apex-item-text:focus,
+.apex-item-select-list:focus {
+  border-color: #007FA3;
+  box-shadow:   0 0 0 3px rgba(0,127,163,0.15);
+}
+.apex-item-wrapper--error .apex-item-text {
+  border-color: #DC3545;
+}
+.apex-item-text:disabled {
+  background: #F0F2F5;
+  color:      #9EA5B5;
+  cursor:     not-allowed;
+}
+.apex-item-textarea { height:auto; padding:12px; resize:vertical; }
+.apex-item-label    { font-size:12px; font-weight:600; color:#333A4D; margin-bottom:4px; }
+.apex-item-helper   { font-size:10px; color:#9EA5B5; margin-top:4px; }
+
+.apex-item-display-only {
+  display:       inline-flex;
+  align-items:   center;
+  min-height:    32px;
+  width:         100% !important;
+  max-width:     100% !important;
+  box-sizing:    border-box;
+  padding:       0 8px;
+  background:    #f5f5f5;        /* light grey — visually read-only, not editable */
+  border:        1px solid #d0d5dd;
+  border-radius: 4px;
+  font-family:   "DM Sans", sans-serif;
+  font-size:     14px;
+  color:         #344054;
+  cursor:        default;
+  word-break:    break-word;
+  line-height:   1.4;
+  pointer-events: none;          /* prevents accidental interaction */
+}
+
+
+/* --- Modern Pill-Shaped Tabs with Animation (Smaller & Blue) --- */
+
+/* 1. Container spacing */
+#customPillTabs .t-Tabs {
+    border-bottom: none !important;
+    gap: 8px !important; /* Reduced gap slightly to match smaller pills */
+    padding-top: 10px !important; 
+    padding-bottom: 5px !important; 
+    overflow: visible !important; 
+}
+
+/* 2. Remove the default APEX active underline completely */
+#customPillTabs .t-Tabs-item .t-Tabs-link:before,
+#customPillTabs .t-Tabs-item .t-Tabs-link:after {
+    display: none !important; 
+}
+
+/* 3. Base style for ALL tabs (Inactive state) */
+#customPillTabs .t-Tabs-item .t-Tabs-link {
+    border-radius: 10px !important; 
+    padding: 6px 18px !important; /* REDUCED PILL SIZE */
+    background-color: #F8FAFC !important; /* Neutral light background */
+    color: #555555 !important;
+    font-size: 13px !important; /* Slightly smaller text for the smaller pill */
+    font-weight: 500 !important;
+    border: 1px solid #EAEAEA !important;
+    transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1) !important; 
+    outline: none !important;
+}
+
+/* 4. Hover effect for inactive tabs (Blue Tint) */
+#customPillTabs .t-Tabs-item:not(.is-active) .t-Tabs-link:hover {
+    background-color: #E5F2F6 !important; /* Light blue hover */
+    color: #505f6d !important; /* Brand Blue */
+    border-color: #505f6d !important;
+    transform: translateY(-2px); 
+}
+
+/* 5. Active Tab Styling (Solid Brand Blue) */
+#customPillTabs .t-Tabs-item.is-active .t-Tabs-link {
+    background-color: #505f6d !important; /* Solid Brand Blue */
+    color: #FFFFFF !important;
+    border: 1px solid #505f6d !important;
+    /*box-shadow: 0 4px 12px rgba(0, 127, 163, 0.3) !important; /* Soft blue drop shadow */
+    transform: translateY(-2px); 
+}
