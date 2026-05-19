@@ -36,10 +36,6 @@
   --apx-overlay-bg     : rgba(8, 10, 18, 0.52);
   --apx-overlay-blur   : 5px;
 
-  /* ── Form fields ── */
-  --apx-field-border   : #ced6ec;
-  --apx-field-radius   : 8px;
-
   /* ── Animation durations ── */
   --apx-dur-in         : 0.36s;
   --apx-dur-out        : 0.20s;
@@ -222,23 +218,6 @@
   letter-spacing : 0.07em !important;
 }
 
-/* Form fields */
-.t-Dialog .apex-item-wrapper input,
-.t-Dialog .apex-item-wrapper select,
-.t-Dialog .apex-item-wrapper textarea {
-  border-radius : var(--apx-field-radius) !important;
-  border        : 1.5px solid var(--apx-field-border) !important;
-  transition    : border-color 0.18s ease, box-shadow 0.18s ease !important;
-  background    : #ffffff !important;
-}
-
-.t-Dialog .apex-item-wrapper input:focus,
-.t-Dialog .apex-item-wrapper select:focus,
-.t-Dialog .apex-item-wrapper textarea:focus {
-  border-color : var(--apx-brand) !important;
-  box-shadow   : 0 0 0 3px var(--apx-brand-focus) !important;
-  outline      : none !important;
-}
 
 
 /* ── 8. Buttons inside dialog ───────────────────────────── */
