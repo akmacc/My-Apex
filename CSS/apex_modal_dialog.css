@@ -1,0 +1,307 @@
+/* ============================================================
+   ORACLE APEX — Premium Modal Dialog Styles
+   File    : apex_modal_dialog.css
+   Upload  : Shared Components → Static Application Files
+   Include : App → User Interface → CSS → File URLs
+             #APP_FILES#apex_modal_dialog.css
+   ============================================================
+
+   ┌─────────────────────────────────────────────────────────┐
+   │  🎨  THEME VARIABLES — edit ONLY this block to retheme  │
+   └─────────────────────────────────────────────────────────┘  */
+
+:root {
+  /* ── Brand colour (your #14b5f5 cyan) ── */
+  --apx-brand          : #14b5f5;       /* primary accent */
+  --apx-brand-dark     : #0d9fd9;       /* darker shade   */
+  --apx-brand-light    : #0fa8e8;       /* lighter shade  */
+  --apx-brand-glow     : rgba(20, 181, 245, 0.35);  /* shadow tint  */
+  --apx-brand-focus    : rgba(20, 181, 245, 0.18);  /* focus ring   */
+
+  /* ── Title bar ── */
+  --apx-header-from    : var(--apx-brand-dark);   /* gradient start */
+  --apx-header-mid     : var(--apx-brand);        /* gradient mid   */
+  --apx-header-to      : var(--apx-brand-light);  /* gradient end   */
+  --apx-header-text    : #ffffff;
+  --apx-header-border  : rgba(255, 255, 255, 0.15);
+
+  /* ── Dialog shell ── */
+  --apx-radius         : 16px;          /* corner radius  */
+  --apx-bg             : #ffffff;       /* content bg     */
+  --apx-body-bg        : #f7f8fc;       /* inner body bg  */
+  --apx-footer-bg      : #f0f2f8;       /* button bar bg  */
+  --apx-footer-border  : #e0e5f0;
+
+  /* ── Backdrop ── */
+  --apx-overlay-bg     : rgba(8, 10, 18, 0.52);
+  --apx-overlay-blur   : 5px;
+
+  /* ── Form fields ── */
+  --apx-field-border   : #ced6ec;
+  --apx-field-radius   : 8px;
+
+  /* ── Animation durations ── */
+  --apx-dur-in         : 0.36s;
+  --apx-dur-out        : 0.20s;
+}
+
+/* ─────────────────────────────────────────────────────────
+   END OF THEME VARIABLES — no need to edit below this line
+   ───────────────────────────────────────────────────────── */
+
+
+/* ── 1. Keyframe Animations ─────────────────────────────── */
+
+@keyframes apx-dialog-in {
+  0%   { opacity: 0; transform: translateY(-24px) scale(0.97); filter: blur(3px); }
+  55%  { opacity: 1; filter: blur(0); }
+  100% { opacity: 1; transform: translateY(0) scale(1); filter: blur(0); }
+}
+
+@keyframes apx-dialog-out {
+  0%   { opacity: 1; transform: translateY(0) scale(1); }
+  100% { opacity: 0; transform: translateY(12px) scale(0.97); filter: blur(2px); }
+}
+
+@keyframes apx-overlay-in  { from { opacity: 0; } to { opacity: 1; } }
+@keyframes apx-overlay-out { from { opacity: 1; } to { opacity: 0; } }
+
+@keyframes apx-titlebar-shine {
+  0%   { background-position: -200% center; }
+  100% { background-position:  200% center; }
+}
+
+
+/* ── 2. Backdrop Overlay ────────────────────────────────── */
+
+.ui-widget-overlay {
+  background        : var(--apx-overlay-bg) !important;
+  backdrop-filter   : blur(var(--apx-overlay-blur)) saturate(130%) !important;
+  -webkit-backdrop-filter: blur(var(--apx-overlay-blur)) saturate(130%) !important;
+  animation         : apx-overlay-in 0.25s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+.ui-widget-overlay.apx-closing {
+  animation: apx-overlay-out var(--apx-dur-out) ease-in both !important;
+}
+
+
+/* ── 3. Dialog Container ────────────────────────────────── */
+
+.ui-dialog.ui-widget.ui-widget-content {
+  border-radius  : var(--apx-radius) !important;
+  overflow       : hidden !important;
+  background     : var(--apx-bg) !important;
+  border         : 1px solid rgba(200, 210, 235, 0.16) !important;
+
+  box-shadow:
+    0  2px  4px  rgba(0,0,0,0.06),
+    0  8px 24px  rgba(0,0,0,0.13),
+    0 28px 60px  rgba(0,0,0,0.20),
+    0  0    0 1px rgba(255,255,255,0.07) inset !important;
+
+  animation      : apx-dialog-in var(--apx-dur-in) cubic-bezier(0.22, 1, 0.36, 1) both;
+  will-change    : transform, opacity;
+  transform-origin: top center;
+}
+
+.ui-dialog.apx-closing {
+  animation      : apx-dialog-out var(--apx-dur-out) ease-in both !important;
+  pointer-events : none !important;
+}
+
+
+/* ── 4. Title Bar ───────────────────────────────────────── */
+
+.ui-dialog .ui-dialog-titlebar {
+  background: linear-gradient(
+    135deg,
+    var(--apx-header-from)  0%,
+    var(--apx-header-mid)  45%,
+    var(--apx-header-to)  100%
+  ) !important;
+  border-bottom  : 1px solid var(--apx-header-border) !important;
+  border-radius  : calc(var(--apx-radius) - 1px) calc(var(--apx-radius) - 1px) 0 0 !important;
+  padding        : 14px 20px 14px 24px !important;
+  position       : relative;
+  overflow       : hidden;
+}
+
+/* One-shot shimmer sweep */
+.ui-dialog .ui-dialog-titlebar::after {
+  content         : '';
+  position        : absolute;
+  inset           : 0;
+  background      : linear-gradient(90deg, transparent 0%, rgba(255,255,255,0.22) 50%, transparent 100%);
+  background-size : 200% 100%;
+  animation       : apx-titlebar-shine 1.2s ease 0.36s 1 forwards;
+  pointer-events  : none;
+}
+
+.ui-dialog .ui-dialog-title {
+  color          : var(--apx-header-text) !important;
+  font-size      : 15px !important;
+  font-weight    : 700 !important;
+  letter-spacing : 0.025em !important;
+  text-shadow    : 0 1px 4px rgba(0, 100, 160, 0.35) !important;
+}
+
+/* Close × button */
+.ui-dialog .ui-dialog-titlebar-close {
+  width          : 28px !important;
+  height         : 28px !important;
+  border-radius  : 50% !important;
+  border         : 1px solid rgba(255,255,255,0.40) !important;
+  background     : rgba(255,255,255,0.18) !important;
+  color          : var(--apx-header-text) !important;
+  display        : flex !important;
+  align-items    : center !important;
+  justify-content: center !important;
+  transition     : background 0.18s ease, border-color 0.18s ease, transform 0.18s ease !important;
+  top            : 50% !important;
+  transform      : translateY(-50%) !important;
+  right          : 16px !important;
+  margin         : 0 !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close:hover {
+  background     : rgba(255,255,255,0.32) !important;
+  border-color   : rgba(255,255,255,0.65) !important;
+  transform      : translateY(-50%) rotate(90deg) !important;
+}
+
+.ui-dialog .ui-dialog-titlebar-close .ui-icon {
+  color: var(--apx-header-text) !important;
+}
+
+
+/* ── 5. Dialog Content Area ─────────────────────────────── */
+
+.ui-dialog .ui-dialog-content {
+  background: var(--apx-body-bg) !important;
+  padding   : 0 !important;
+}
+
+.ui-dialog .ui-dialog-content .t-Body {
+  background: var(--apx-body-bg) !important;
+}
+
+
+/* ── 6. Button Bar / Footer ─────────────────────────────── */
+
+.ui-dialog .ui-dialog-buttonpane {
+  background    : var(--apx-footer-bg) !important;
+  border-top    : 1px solid var(--apx-footer-border) !important;
+  border-radius : 0 0 calc(var(--apx-radius) - 1px) calc(var(--apx-radius) - 1px) !important;
+  padding       : 12px 20px !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset button {
+  border-radius : 8px !important;
+  font-weight   : 600 !important;
+  transition    : transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.ui-dialog .ui-dialog-buttonpane .ui-dialog-buttonset button:hover {
+  transform  : translateY(-1px) !important;
+  box-shadow : 0 4px 12px rgba(0,0,0,0.16) !important;
+}
+
+
+/* ── 7. APEX Dialog Page inner layout ───────────────────── */
+
+.t-Dialog-page--standard .t-Body-contentInner {
+  padding: 20px 24px !important;
+}
+
+.t-Dialog .t-Region-title {
+  font-size      : 12px !important;
+  font-weight    : 700 !important;
+  color          : #1a2340 !important;
+  text-transform : uppercase !important;
+  letter-spacing : 0.07em !important;
+}
+
+/* Form fields */
+.t-Dialog .apex-item-wrapper input,
+.t-Dialog .apex-item-wrapper select,
+.t-Dialog .apex-item-wrapper textarea {
+  border-radius : var(--apx-field-radius) !important;
+  border        : 1.5px solid var(--apx-field-border) !important;
+  transition    : border-color 0.18s ease, box-shadow 0.18s ease !important;
+  background    : #ffffff !important;
+}
+
+.t-Dialog .apex-item-wrapper input:focus,
+.t-Dialog .apex-item-wrapper select:focus,
+.t-Dialog .apex-item-wrapper textarea:focus {
+  border-color : var(--apx-brand) !important;
+  box-shadow   : 0 0 0 3px var(--apx-brand-focus) !important;
+  outline      : none !important;
+}
+
+
+/* ── 8. Buttons inside dialog ───────────────────────────── */
+
+.t-Dialog .t-Button--hot {
+  background    : linear-gradient(135deg, var(--apx-brand) 0%, var(--apx-brand-dark) 100%) !important;
+  border-radius : 8px !important;
+  box-shadow    : 0 2px 8px var(--apx-brand-glow) !important;
+  transition    : transform 0.15s ease, box-shadow 0.15s ease !important;
+}
+
+.t-Dialog .t-Button--hot:hover {
+  transform  : translateY(-1px) !important;
+  box-shadow : 0 4px 16px var(--apx-brand-glow) !important;
+}
+
+.t-Dialog .t-Button:not(.t-Button--hot) {
+  border-radius : 8px !important;
+  transition    : background 0.15s ease, transform 0.15s ease !important;
+}
+
+.t-Dialog .t-Button:not(.t-Button--hot):hover {
+  transform: translateY(-1px) !important;
+}
+
+
+/* ── 9. Resize handle ───────────────────────────────────── */
+
+.ui-resizable-handle {
+  opacity    : 0 !important;
+  transition : opacity 0.2s ease !important;
+}
+
+.ui-dialog:hover .ui-resizable-handle {
+  opacity: 1 !important;
+}
+
+.ui-resizable-se {
+  width         : 14px !important;
+  height        : 14px !important;
+  border-radius : 0 0 14px 0 !important;
+  background    : rgba(20,181,245,0.20) !important;
+  border-bottom : 2px solid var(--apx-brand) !important;
+  border-right  : 2px solid var(--apx-brand) !important;
+  bottom        : 0 !important;
+  right         : 0 !important;
+}
+
+
+/* ── 10. Drag cursor ────────────────────────────────────── */
+
+.ui-dialog .ui-draggable-handle        { cursor: grab !important; }
+.ui-dialog .ui-draggable-handle:active { cursor: grabbing !important; }
+
+
+/* ── 11. Responsive ─────────────────────────────────────── */
+
+@media (max-width: 640px) {
+  .ui-dialog.ui-widget.ui-widget-content {
+    border-radius : 12px !important;
+    left          : 10px !important;
+    right         : 10px !important;
+    width         : calc(100vw - 20px) !important;
+    max-width     : none !important;
+  }
+}
